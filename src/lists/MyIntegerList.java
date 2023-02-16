@@ -1,22 +1,24 @@
+package lists;
+
+import interfaces.IntegerList;
 import java.util.Arrays;
 
 
-public class MyArrayList implements StringList {
+public class MyIntegerList implements IntegerList {
     final int INCREMENT = 0x3;   // для тестов = 3
     private int size ;
-    private String[] list ;
+    private Integer[] list ;
 
-    public MyArrayList() { clear(); }
-
-    public MyArrayList(int size) {
-        list = new String[size];
+    public MyIntegerList() { clear(); }
+    public MyIntegerList(int size) {
+        list = new Integer[size];
     }
 
     @Override
-    public String add(String item) {
+    public Integer add(Integer item) {
 
         if(list.length == size){
-            var buffer = new String[list.length + INCREMENT];
+            var buffer = new Integer[list.length + INCREMENT];
             System.arraycopy(list,0, buffer,0, size);
             list = buffer;
         }
@@ -24,12 +26,10 @@ public class MyArrayList implements StringList {
     }
 
     @Override
-    public String add(int index, String item) {
+    public Integer add(int index, Integer item) {
         checkBounds(index);
-        var inc = INCREMENT;
-        if (list.length != size) inc = 0;
 
-        String[] buffer = new String[list.length + inc];
+        var buffer = new Integer[list.length + list.length == size ? INCREMENT : 0 ];
         System.arraycopy(list, 0, buffer, 0, index);
         System.arraycopy(list, index, buffer, index + 1, size - index);
         buffer[index] = item;
@@ -40,13 +40,13 @@ public class MyArrayList implements StringList {
     }
 
     @Override
-    public String set(int index, String item) {
+    public Integer set(int index, Integer item) {
         checkBounds(index);
         return list[index]=item;
     }
 
     @Override
-    public String remove(String item) {
+    public Integer remove(Integer item) {
 
         if (!contains(item)) throw new IllegalArgumentException(" элемент отсутствует в списке ");
         this.remove(indexOf(item));
@@ -54,7 +54,7 @@ public class MyArrayList implements StringList {
     }
 
     @Override
-    public String remove(int index) {
+    public Integer remove(int index) {
         checkBounds(index);
         size--;
         var result = list[index];
@@ -64,15 +64,44 @@ public class MyArrayList implements StringList {
     }
 
     @Override
-    public boolean contains(String item) {
-        for ( String s: list )
-            if ( s != null && s.equals(item))
-                return true;
+    public boolean contains(Integer item) {
+//        for ( Integer s: list )
+//            if ( s != null && s.equals(item))
+//                return true;
+//        return false;
+
+        sortInsertion();
+        return binarySearch(item);
+
+    }
+
+    private void sortInsertion() {
+        for (int i = 1; i < size ; i++) {
+            int temp = list[i];
+            int j = i;
+            while (j > 0 && list[j - 1] >= temp) {
+                list[j] = list[j - 1];
+                j--;
+            }
+            list[j] = temp;
+        }
+    }
+
+    private boolean binarySearch(int element) {
+        int min = 0;
+        int max = size - 1;
+
+        while (min <= max) {
+            int mid = (min + max) / 2;
+            if (element == list[mid])  return true;
+            if (element < list[mid])    max = mid - 1;
+                else  min = mid + 1;
+        }
         return false;
     }
 
     @Override
-    public int indexOf(String item) {
+    public int indexOf(Integer item) {
         for (int i = 0; i < size; i++)
             if ( list[i].equals(item))
                 return i;
@@ -81,7 +110,7 @@ public class MyArrayList implements StringList {
     }
 
     @Override
-    public int lastIndexOf(String item) {
+    public int lastIndexOf(Integer item) {
         for (int i = size-1 ; i >= 0; i--)
             if (list[i].equals(item))
                 return i;
@@ -90,15 +119,15 @@ public class MyArrayList implements StringList {
     }
 
     @Override
-    public String get(int index) {
+    public Integer get(int index) {
         checkBounds(index);
         return list[index];
     }
 
     @Override
-    public boolean equals(StringList otherList) {
+    public boolean equals(IntegerList otherList) {
 
-        if( size != otherList.size()) return false;
+        if (size != otherList.size()) return false;
         for (int i = 0; i < size; i++)
             if (!list[i].equals(otherList.get(i)))
                 return false;
@@ -116,11 +145,11 @@ public class MyArrayList implements StringList {
     @Override
     public void clear() {
         size = 0;
-        list = new String[INCREMENT];
-        }
+        list = new Integer[INCREMENT];
+    }
 
     @Override
-    public String[] toArray() { return Arrays.copyOf(list,size); }
+    public Integer[] toArray() { return Arrays.copyOf(list,size); }
 
     public void checkBounds(int index) {
         if ( index < 0 || index >= size )
@@ -129,11 +158,7 @@ public class MyArrayList implements StringList {
 
     @Override
     public String toString() {
-        return "MyArrayList{" +
-                "INC=" + INCREMENT +
-                ", size=" + size +
-                ", list=" + Arrays.toString(list) +
-                '}';
+        return "MyIntegerList{" + "INC=" + INCREMENT +", size=" + size +", list=" + Arrays.toString(list) +'}';
     }
 
 }
