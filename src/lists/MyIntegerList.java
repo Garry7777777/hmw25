@@ -5,7 +5,7 @@ import java.util.Arrays;
 
 
 public class MyIntegerList implements IntegerList {
-    final int INCREMENT = 0x3;   // для тестов = 3
+    private final int INITIAL_SIZE = 0xF;
     private int size ;
     private Integer[] list ;
 
@@ -16,27 +16,24 @@ public class MyIntegerList implements IntegerList {
 
     @Override
     public Integer add(Integer item) {
-
-        if(list.length == size){
-            var buffer = new Integer[list.length + INCREMENT];
-            System.arraycopy(list,0, buffer,0, size);
-            list = buffer;
-        }
-        return list[size++]=item;
+        if (list.length == size) grow();
+        return list[size++] = item;
     }
 
     @Override
     public Integer add(int index, Integer item) {
         checkBounds(index);
-
-        var buffer = new Integer[list.length + list.length == size ? INCREMENT : 0 ];
-        System.arraycopy(list, 0, buffer, 0, index);
-        System.arraycopy(list, index, buffer, index + 1, size - index);
-        buffer[index] = item;
-
-        list = buffer;
+        if (size == list.length)  grow();
+        System.arraycopy(list, index, list, index + 1, size - index);
+        list[index] = item;
         size++;
         return item;
+    }
+
+    public void grow (){
+        var newList = new Integer[list.length + (list.length>>1) ];
+        System.arraycopy(list, 0, newList, 0, list.length);
+        list = newList;
     }
 
     @Override
@@ -69,23 +66,50 @@ public class MyIntegerList implements IntegerList {
 //            if ( s != null && s.equals(item))
 //                return true;
 //        return false;
+//        mergeSort(list);
 
-        sortInsertion();
+        quickSort( list, 0, size-1);
         return binarySearch(item);
 
     }
 
-    private void sortInsertion() {
-        for (int i = 1; i < size ; i++) {
-            int temp = list[i];
-            int j = i;
-            while (j > 0 && list[j - 1] >= temp) {
-                list[j] = list[j - 1];
-                j--;
-            }
-            list[j] = temp;
+    public void quickSort(Integer[] arr, int begin, int end) {
+        if (begin < end) {
+            var partitionIndex = partition(arr, begin, end);
+            quickSort(arr, begin, partitionIndex - 1);
+            quickSort(arr, partitionIndex + 1, end);
         }
     }
+
+    private int partition(Integer[] arr, int begin, int end) {
+        var pivot = arr[end];
+        var i = (begin - 1);
+
+        for (var j = begin; j < end; j++) {
+            if (arr[j] <= pivot) {
+                i++;
+                swapElements(arr, i, j);
+            }
+        }
+        swapElements(arr, i + 1, end);
+        return i + 1;
+    }
+
+    private void swapElements(Integer[] arr, int left, int right) {
+        var temp = arr[left];  arr[left] = arr[right];  arr[right] = temp;
+    }
+
+//    private void sortInsertion() {
+//        for (int i = 1; i < size ; i++) {
+//            int temp = list[i];
+//            int j = i;
+//            while (j > 0 && list[j - 1] >= temp) {
+//                list[j] = list[j - 1];
+//                j--;
+//            }
+//            list[j] = temp;
+//        }
+//    }
 
     private boolean binarySearch(int element) {
         int min = 0;
@@ -99,6 +123,8 @@ public class MyIntegerList implements IntegerList {
         }
         return false;
     }
+
+
 
     @Override
     public int indexOf(Integer item) {
@@ -145,7 +171,7 @@ public class MyIntegerList implements IntegerList {
     @Override
     public void clear() {
         size = 0;
-        list = new Integer[INCREMENT];
+        list = new Integer[INITIAL_SIZE];
     }
 
     @Override
@@ -158,7 +184,7 @@ public class MyIntegerList implements IntegerList {
 
     @Override
     public String toString() {
-        return "MyIntegerList{" + "INC=" + INCREMENT +", size=" + size +", list=" + Arrays.toString(list) +'}';
+        return "MyIntegerList{" + "INC=" + INITIAL_SIZE +", size=" + size +", list=" + Arrays.toString(list) +'}';
     }
 
 }

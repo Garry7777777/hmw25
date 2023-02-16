@@ -5,7 +5,7 @@ import java.util.Arrays;
 
 
 public class MyArrayList implements StringList {
-    final int INCREMENT = 0x3;   // для тестов = 3
+    private final int INCREMENT = 0x3;   // для тестов = 3
     private int size ;
     private String[] list ;
 

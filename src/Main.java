@@ -1,20 +1,16 @@
-import lists.MyIntegerList;
-import java.util.Arrays;
-import java.util.Random;
+import lists.*;
+import java.util.*;
+
 
 public class Main {
-//    задача:
-//    требуется написать еще одну реализацию интерфейса из прошлого домашнего задания, но с дополнительными методами.
-//    Необходимо:
-//    Написать вторую реализацию интерфейса списка (скопировать и скорректировать первую) из прошлого домашнего задания,
-//    но «подогнать» под работу с целыми числами, используя ссылочный тип Integer.
-//    Добавить в реализацию приватный метод с самой быстрой из рассмотренных сортировок.
-//    Для выявления самой быстрой сортировки следует сравнить сортировки по времени выполнения на случайно сгенерированном
-//    массиве со 100 000 элементов.
-//    Учесть, что для сравнения сортировок нужно использовать 3 разные копии массива, т. к. сортировать уже отсортированный
-//    ранее массив некорректно. Код самого сравнения прикладывать по желанию.
-//    Добавить в реализацию приватный метод бинарного поиска. Учесть, что метод contains уже был реализован в прошлом ДЗ.
-//    Его следует переработать, осуществив сортировку (реализованную в шаге 2) и вызвав метод бинарного поиска.
+//    привести реализацию ArrayList'а к одной из стандартных библиотек Java.
+//    работу следует проводить с той реализацией, которая обрабатывает числа, а не строки.
+//
+//    Шаг 1. Реализовать приватный метод grow, который будет отвечать за расширение массива-хранилища
+//              в 1,5 раза в ситуации, когда место закончилось.
+//    Шаг 2. Добавить проверку на заполненность в метод add и, если массив заполнен, расширить его.
+//    Шаг 3. Изменить реализацию сортировки на рекурсивную из последней шпаргалки. Выбор конкретной
+//              сортировки лежит на вас.
 
     public static void main(String[] args) {
 
@@ -46,12 +42,33 @@ public class Main {
 
 
         var myIntList = new MyIntegerList();
-        for( int i=0 ;i < 10000;i++) myIntList.add( random.nextInt(1000));
+        for( int i=0 ;i < 100000;i++) myIntList.add( random.nextInt(1000));
 
 
         start = System.currentTimeMillis();
         myIntList.contains(777);
         System.out.println(" myIntList.contains = " + (System.currentTimeMillis() - start));
+        System.out.println("myIntList.size() = " + myIntList.size());
+
+
+//  метод sortInsertion -  myIntList.contains = 106
+//  метод quickSort        myIntList.contains = 21
+
+
+        var myList = new MyIntegerList();
+        var myOtherList = new MyIntegerList(2);
+
+        System.out.println(myList.size());
+
+        myList.add(1); myList.add(2); myList.add(3); myList.add(4);
+        myOtherList.add(1); myOtherList.add(2); myOtherList.add(3); myOtherList.add(4);
+
+        System.out.println(myList);
+        System.out.println(myOtherList);
+
+
+
+
 
 //        MyArrayList myList = new MyArrayList();
 //        MyArrayList myOtherList = new MyArrayList(2);
@@ -80,10 +97,7 @@ public class Main {
 
     }
 
-    public static boolean contains(int[] arr, int element) {
-        for (int i : arr)  if (i == element) return true;
-        return false;
-    }
+
     public static void sortSelection(int[] arr) {
         for (int i = 0; i < arr.length - 1; i++) {
             int minElementIndex = i;
