@@ -123,7 +123,7 @@ public class MyArrayList implements StringList {
     public String[] toArray() { return Arrays.copyOf(list,size); }
 
     public void checkBounds(int index) {
-        if ( index < 0 || index > size )
+        if ( index < 0 || index >= size )
             throw new ArrayIndexOutOfBoundsException ( " выход индекса за границы массива " );
     }
 
