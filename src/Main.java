@@ -16,7 +16,7 @@ public class Main {
         MyArrayList myList = new MyArrayList();
         MyArrayList myOtherList = new MyArrayList(2);
 
-        System.out.println(myList.size);
+        System.out.println(myList.size());
 
         myList.add("тест1"); myList.add("тест2"); myList.add("тест3"); myList.add("тест4");
         myOtherList.add("тест1"); myOtherList.add("тест2"); myOtherList.add("тест3"); myOtherList.add("тест4");

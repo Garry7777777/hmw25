@@ -3,7 +3,7 @@ import java.util.Arrays;
 
 public class MyArrayList implements StringList {
     final int INCREMENT = 0x3;   // для тестов = 3
-    public int size ;
+    private int size ;
     private String[] list ;
 
     public MyArrayList() { clear(); }
@@ -14,10 +14,11 @@ public class MyArrayList implements StringList {
 
     @Override
     public String add(String item) {
-        if( list[list.length-1] != null){
-        var newList = new String[list.length + INCREMENT];
-        System.arraycopy(list,0, newList,0, list.length);
-        list = newList;
+
+        if(list.length == size){
+            var buffer = new String[list.length + INCREMENT];
+            System.arraycopy(list,0, buffer,0, size);
+            list = buffer;
         }
         return list[size++]=item;
     }
@@ -54,9 +55,7 @@ public class MyArrayList implements StringList {
 
     @Override
     public String remove(int index) {
-
         checkBounds(index);
-        if (list[index] == null) throw new IllegalArgumentException(" элемент отсутствует в списке ");
         size--;
         var result = list[index];
         System.arraycopy(list, index + 1, list, index, size-index );
@@ -124,7 +123,7 @@ public class MyArrayList implements StringList {
     public String[] toArray() { return Arrays.copyOf(list,size); }
 
     public void checkBounds(int index) {
-        if ( index < 0 || index > list.length )
+        if ( index < 0 || index > size )
             throw new ArrayIndexOutOfBoundsException ( " выход индекса за границы массива " );
     }
 
