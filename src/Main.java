@@ -20,7 +20,7 @@ public class Main {
 
         var testArray1 = new int[10000];
         var random = new Random();
-        Arrays.setAll(testArray1, i -> random.nextInt(100));
+        Arrays.setAll(testArray1, i -> random.nextInt(1000));
         var testArray2 = testArray1.clone();
         var testArray3 = testArray1.clone();
 
@@ -48,10 +48,10 @@ public class Main {
         var myIntList = new MyIntegerList();
         for( int i=0 ;i < 10000;i++) myIntList.add( random.nextInt(1000));
 
-        start = System.currentTimeMillis();
-        System.out.println("myIntList.contains(777) = " + myIntList.contains(777));
-        System.out.println(" myIntList.contains = " + (System.currentTimeMillis() - start));
 
+        start = System.currentTimeMillis();
+        myIntList.contains(777);
+        System.out.println(" myIntList.contains = " + (System.currentTimeMillis() - start));
 
 //        MyArrayList myList = new MyArrayList();
 //        MyArrayList myOtherList = new MyArrayList(2);
