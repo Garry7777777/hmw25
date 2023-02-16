@@ -48,8 +48,9 @@ public class Main {
         var myIntList = new MyIntegerList();
         for( int i=0 ;i < 10000;i++) myIntList.add( random.nextInt(1000));
 
+        start = System.currentTimeMillis();
         System.out.println("myIntList.contains(777) = " + myIntList.contains(777));
-
+        System.out.println(" myIntList.contains = " + (System.currentTimeMillis() - start));
 
 
 //        MyArrayList myList = new MyArrayList();
